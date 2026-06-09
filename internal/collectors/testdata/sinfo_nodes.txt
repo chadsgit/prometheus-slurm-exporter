@@ -1,0 +1,7 @@
+143,idle
+15,allocated
+3,down*
+1,fail*
+5,drain
+2,mixed
+1,completing

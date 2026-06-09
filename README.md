@@ -194,6 +194,7 @@ for `vpenso/prometheus-slurm-exporter` is shown below:
 ## License
 
 Copyright 2017-2020 Victor Penso, Matteo Dessalvi
+Copyright 2026 Chad Collins (chadsgit), fork restructure and fixes
 
 This is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 

@@ -1,0 +1,6 @@
+physics|0.600000
+  alice|0.500000
+  bob|0.300000
+chemistry|0.400000
+  carol|0.200000
+biology|0.100000

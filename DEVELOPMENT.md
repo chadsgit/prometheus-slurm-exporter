@@ -17,35 +17,32 @@ _Alternatively install Go using the packaging system of your Linux distribution.
 
 ## Clone this repository and build
 
-Use Git to clone the source code of the exporter, run all the tests and build the binary:
-
 ```bash
-# clone the source code
-git clone https://github.com/vpenso/prometheus-slurm-exporter.git
+git clone -b feat/harden-restructure https://github.com/chadsgit/prometheus-slurm-exporter
 cd prometheus-slurm-exporter
-make
+go build ./cmd/exporter/
 ```
 
-To just run the tests:
+To run the tests:
 
 ```bash
-make test
+go test ./...
 ```
 
-Start the exporter (foreground), and query all metrics:
+Start the exporter (foreground) and query all metrics:
 
 ```bash
-./bin/prometheus-slurm-exporter
-```
-
-If you wish to run the exporter on a different port, or the default port (8080) is already in use, run with the following argument:
-
-```bash
-./bin/prometheus-slurm-exporter --listen-address="0.0.0.0:<port>"
-...
-
-# query all metrics (default port)
+./exporter
 curl http://localhost:8080/metrics
+curl http://localhost:8080/health
+```
+
+Optional flags:
+
+```bash
+./exporter --listen-address="0.0.0.0:<port>"   # change listen port (default 8080)
+./exporter --gpus-acct                          # enable GPU accounting metrics
+./exporter --fairshare-acct                     # enable fair-share metrics (requires sshare)
 ```
 
 ## References

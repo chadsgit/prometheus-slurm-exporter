@@ -2,6 +2,20 @@
 
 Full commit history per tag: https://github.com/vpenso/prometheus-slurm-exporter/commits/{tag number}
 
+* **0.20** _(chadsgit fork. feat/harden-restructure)_
+  - **Crash fix**: replaced all `log.Fatal`/`os.Exit` calls in collectors with `log.Printf` warnings. Exporter no longer dies on transient Slurm CLI errors (Bug #1)
+  - **Crash fix**: bounds checks on `sinfo` per-node output prevent out-of-bounds panic on malformed lines (Bug #2)
+  - **GPU crash fix**: bounds check on `sinfo` GPU output prevents panic when a node has no GRES (Bug #3)
+  - **GPU crash fix**: NaN guard on GPU utilization calculation prevents invalid metric panic on zero-GPU clusters (Bug #4)
+  - **GPU fix**: corrected `exec.Command` argument splitting for `sinfo` GPU query. Was being passed as a single string (Bug #5)
+  - **GPU fix**: AllocTRES parser now handles both `gpu:N` (Slurm <23) and `gres/gpu=N` (Slurm 23+) formats (Bug #6)
+  - **Scheduler fix**: `if/else if` guard on `Last cycle`/`Mean cycle` counters. Backfill values no longer mirror main scheduler values when backfilling is disabled (Bug #7)
+  - **Restructure**: moved all collectors to `internal/collectors/`, shared exec helper to `internal/slurm/`, entry point to `cmd/exporter/main.go`
+  - **Flags**: added `-fairshare-acct` flag to opt-in to sshare fair-share metrics (mirrors existing `-gpus-acct` pattern)
+  - **Endpoint**: added `/health` HTTP endpoint for liveness checks
+  - All package-level `regexp.MustCompile` vars (previously compiled inside scrape loops)
+  - Full test coverage for all parse functions with regression tests for each crash bug
+
 * **0.19**
   - Merge PR#50
 

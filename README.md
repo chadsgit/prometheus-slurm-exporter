@@ -28,8 +28,9 @@ Prometheus collector and exporter for metrics extracted from the [Slurm](https:/
 
 Be aware that:
 
-* According to issue #38, users reported that newer version of Slurm provides slightly different output and thus GPUs accounting may not work properly.
-* Users who do not have GPUs and/or do not have accounting activated may want to keep GPUs accounting **off** (see issue #45).
+* GPU accounting must be explicitly enabled with the `-gpus-acct` flag, otherwise it will not be activated.
+* The AllocTRES parser handles both `gpu:N` (Slurm <23) and `gres/gpu=N` (Slurm 23+) formats automatically.
+* Users who do not have GPUs and/or do not have accounting activated may want to keep GPUs accounting **off**.
 
 ### State of the Nodes
 
@@ -56,7 +57,7 @@ Since version **0.18**, the following information are also extracted and exporte
 * Memory: _allocated_ and in _total_.
 * Labels: hostname and its Slurm status (e.g. _idle_, _mix_, _allocated_, _draining_, etc.).
 
-See the related [test data](https://github.com/vpenso/prometheus-slurm-exporter/blob/master/test_data/sinfo_mem.txt) to check the format of the information extracted from Slurm.
+See the related [test data](internal/collectors/testdata/sinfo_mem.txt) to check the format of the information extracted from Slurm.
 
 ### Status of the Jobs
 
@@ -116,12 +117,15 @@ Collect _share_ statistics for every Slurm account. Refer to the [manpage of the
 
 ## Installation
 
-* Read [DEVELOPMENT.md](DEVELOPMENT.md) in order to build the Prometheus Slurm Exporter. After a successful build copy the executable
-`bin/prometheus-slurm-exporter` to a node with access to the Slurm command-line interface.
+On the Slurm management node (requires Go 1.21+):
 
-* A [Systemd Unit][sdu] file to run the executable as service is available in [lib/systemd/prometheus-slurm-exporter.service](lib/systemd/prometheus-slurm-exporter.service).
+```bash
+git clone -b feat/harden-restructure https://github.com/chadsgit/prometheus-slurm-exporter
+cd prometheus-slurm-exporter
+go build ./cmd/exporter/
+```
 
-* (**optional**) Distribute the exporter as a Snap package: consult the [following document](packages/snap/README.md). **NOTE**: this method requires the use of [Snap](https://snapcraft.io), which is built by [Canonical](https://canonical.com).
+Copy the resulting `exporter` binary to a permanent location and run it. A [Systemd Unit][sdu] file is available at [lib/systemd/prometheus-slurm-exporter.service](lib/systemd/prometheus-slurm-exporter.service); update the `ExecStart` path to point at the new binary.
 
 [sdu]: https://www.freedesktop.org/software/systemd/man/systemd.service.html
 

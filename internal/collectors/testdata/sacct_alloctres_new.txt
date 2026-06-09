@@ -1,0 +1,2 @@
+cpu=32,gres/gpu=4,mem=64G
+cpu=16,gres/gpu=2,mem=32G

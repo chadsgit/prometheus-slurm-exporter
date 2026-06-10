@@ -1,6 +1,6 @@
 ## Changelog
 
-Full commit history per tag: https://github.com/vpenso/prometheus-slurm-exporter/commits/{tag number}
+Full commit history: https://github.com/chadsgit/prometheus-slurm-exporter/commits/master
 
 * **0.20** _(chadsgit fork. feat/harden-restructure)_
   - **Crash fix**: replaced all `log.Fatal`/`os.Exit` calls in collectors with `log.Printf` warnings. Exporter no longer dies on transient Slurm CLI errors (Bug #1)
